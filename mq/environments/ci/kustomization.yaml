@@ -6,8 +6,8 @@ resources:
 #- triggerbindings/cntk-binding.yaml
 #- triggertemplates/mq-infra-dev-template.yaml
 #- triggertemplates/mq-spring-app-dev.yaml
-#- pipelines/ibm-test-pipeline-for-dev.yaml
-#- pipelines/ibm-test-pipeline-for-stage.yaml
+- pipelines/ibm-test-pipeline-for-dev.yaml
+- pipelines/ibm-test-pipeline-for-stage.yaml
 #- pipelines/java-maven-dev-pipeline.yaml
 - pipelines/mq-pipeline-dev.yaml
 - pipelines/mq-spring-app-dev-pipeline.yaml
