@@ -164,7 +164,7 @@ spec:
           # note: the export does not like the - sign
           ${JMETER_BIN}/jmeter.sh \
             -n -t $(params.test-plan) \
-            -Jcluster=$route \
+            -Jurl=$route \
             -l /source/report.jtl
           cat /source/report.jtl
           echo "checking for the existance of errors .."
