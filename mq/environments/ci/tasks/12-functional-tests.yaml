@@ -21,6 +21,8 @@ spec:
     default: ""
   - name: test-file
     default: ""
+  results:
+    - name: app-name
   volumes:
     - name: source
       emptyDir: {}
@@ -76,6 +78,8 @@ spec:
         echo "Please provide a valid git url"
         exit 1
       fi
+
+      echo -n "${GIT_REPO}">$(results.app-name.path)
 
       wait_until() {
         condition=$1
