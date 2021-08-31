@@ -100,7 +100,7 @@ spec:
           https://$url 2>/dev/null
       }
 
-      route=$(oc -n ${SRC_ENV} get route | awk '{if ($1 ~ "${GIT_REPO}") print $2}'
+      route=$(oc -n ${SRC_ENV} get route | awk '{if ($1 ~ "${GIT_REPO}") print $2}')
 
       echo -n $route > /source/route.txt
       wait_until "url_is_ready $route/" "Route is not set up"
