@@ -76,30 +76,9 @@ spec:
 
         echo -n "${GIT_REPO}">$(results.app-name.path)
 
-        wait_until() {
-          condition=$1
-          message=$2
-          retries=$RETRIES
-          until $condition || [[ "$retries" -eq 0 ]]; do
-            retries=$((retries - 1))
-            sleep $SLEEP_TIME_SEC
-          done
-          if [[ "$retries" -eq 0 ]]; then
-            echo $message
-            exit 1
-          fi
-        }
-
-        url_is_ready() {
-          url=$1
-          curl -s \
-            https://$url 2>/dev/null
-        }
-
         route=$(oc -n ${SRC_ENV} get route | awk '{if ($1 ~ "${GIT_REPO}") print $2}')
 
         echo -n $route > /source/route.txt
-        wait_until "url_is_ready $route/" "Route is not set up"
     - name: jmeter-it
       image: quay.io/hemankita/jmeter-11:latest
       workingDir: $(params.source-dir)
