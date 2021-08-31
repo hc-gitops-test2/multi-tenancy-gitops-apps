@@ -74,12 +74,11 @@ spec:
       GIT_REPO=${basename%.*}
       echo $GIT_REPO
 
-      echo -n "${GIT_REPO}">$(results.app-name.path)
+      echo -n ${GIT_REPO}>$(results.app-name.path)
 
       route=$(oc -n ${SRC_ENV} get route | awk '{if ($1 ~ "${GIT_REPO}") print $2}')
 
       echo -n $route > /source/route.txt
-      wait_until "url_is_ready $route/" "Route is not set up"
   - name: run-test
     image: postman/newman:ubuntu
     workingDir: $(params.source-dir)
