@@ -67,6 +67,8 @@ spec:
         RETRIES=20
 
         SRC_ENV=$(echo $(params.src-environment) | cut -d "-" -f2)
+        
+        regex="^(https|git)(:\/\/|@)([^\/:]+)[\/:]([^\/:]+)\/(.+).git$"
 
         if [[ $(params.git-url) =~ $regex ]]; then
           GIT_PROTOCOL=${BASH_REMATCH[1]}
