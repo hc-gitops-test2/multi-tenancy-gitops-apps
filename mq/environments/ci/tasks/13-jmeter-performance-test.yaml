@@ -68,18 +68,11 @@ spec:
 
         SRC_ENV=$(echo $(params.src-environment) | cut -d "-" -f2)
         
-        regex="^(https|git)(:\/\/|@)([^\/:]+)[\/:]([^\/:]+)\/(.+).git$"
-
-        if [[ $(params.git-url) =~ $regex ]]; then
-          GIT_PROTOCOL=${BASH_REMATCH[1]}
-          GIT_SEPARATOR=${BASH_REMATCH[2]}
-          GIT_HOST=${BASH_REMATCH[3]}
-          GIT_ORG=${BASH_REMATCH[4]}
-          GIT_REPO=${BASH_REMATCH[5]}
-        else
-          echo "Please provide a valid git url"
-          exit 1
-        fi
+        url=$(params.git-url)
+        basename=$(basename $url)
+        echo $basename
+        GIT_REPO=${basename%.*}
+        echo $GIT_REPO
 
         echo -n "${GIT_REPO}">$(results.app-name.path)
 
