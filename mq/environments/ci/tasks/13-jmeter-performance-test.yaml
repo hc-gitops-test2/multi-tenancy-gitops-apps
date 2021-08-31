@@ -76,7 +76,7 @@ spec:
 
         echo -n "${GIT_REPO}">$(results.app-name.path)
 
-        route=$(oc -n ${SRC_ENV} get route | awk '{if ($1 ~ "${GIT_REPO}") print $2}')
+        route=$(oc -n ${SRC_ENV} get route | awk '{if ($1 ~ ENVIRON["GIT_REPO"]) print $2}')
 
         echo -n $route > /source/route.txt
     - name: jmeter-it
