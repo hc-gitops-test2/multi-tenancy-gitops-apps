@@ -67,15 +67,13 @@ spec:
       RETRIES=20
 
       SRC_ENV=$(echo $(params.src-environment) | cut -d "-" -f2)
-      echo ${SRC_ENV}
 
       url=$(params.git-url)
       basename=$(basename $url)
-      echo $basename
       GIT_REPO=${basename%.*}
       echo $GIT_REPO
 
-      echo -n ${GIT_REPO}>$(results.app-name.path)
+      echo -n ${GIT_REPO} | tee $(results.app-name.path)
 
       route=$(oc -n ${SRC_ENV} get route ${GIT_REPO} -o jsonpath='{.spec.host}')
 
