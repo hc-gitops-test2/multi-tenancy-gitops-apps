@@ -42,6 +42,8 @@ spec:
       runAfter:
         - dev-instance-tests
       params:
+        - name: app-name
+          value: "$(tasks.dev-instance-tests.results.app-name)"
         - name: src-environment
           value: "$(params.src-environment)"
         - name: dest-environment
