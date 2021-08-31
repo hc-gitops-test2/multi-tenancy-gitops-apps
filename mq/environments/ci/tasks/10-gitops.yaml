@@ -11,6 +11,8 @@ metadata:
     version: 0.0.0
 spec:
   params:
+    - name: app-name
+      default: ""
     - name: version
       default: ""
     - name: src-environment
@@ -103,18 +105,7 @@ spec:
           #!/usr/bin/env bash
           set -ex
 
-          if [[ $(params.git-url) =~ $regex ]]; then
-            GIT_PROTOCOL=${BASH_REMATCH[1]}
-            GIT_SEPARATOR=${BASH_REMATCH[2]}
-            GIT_HOST=${BASH_REMATCH[3]}
-            GIT_ORG=${BASH_REMATCH[4]}
-            GIT_REPO=${BASH_REMATCH[5]}
-          else
-            echo "Please provide a valid git url"
-            exit 1
-          fi
-
-          APP_NAME="${GIT_REPO}"
+          APP_NAME="$(params.app-name)"
 
           SUBDIR="$(params.subdir)"
 
@@ -209,8 +200,8 @@ spec:
             VERSION="$(params.version)"
             HELM_URL="$(params.helm-url)"
           else
-            VERSION="$(grep 'version:' ./$(params.app-path)/$(params.src-environment)/${APP_NAME}/${YAML_FILE} | awk 'NR==1{print $2}')"
-            HELM_URL="$(grep 'repository:' ./$(params.app-path)/$(params.src-environment)/${APP_NAME}/requirements.yaml | awk 'NR==1{print $2}')"
+            VERSION="$(grep 'version:' ./$(params.app-path)/$(params.src-environment)/$(params.app-name)/${YAML_FILE} | awk 'NR==1{print $2}')"
+            HELM_URL="$(grep 'repository:' ./$(params.app-path)/$(params.src-environment)/$(params.app-name)/requirements.yaml | awk 'NR==1{print $2}')"
           fi
 
           if [[ -z "${SUBDIR_SRC}" && -f "${SUBDIR_DEST}/${YAML_FILE}" ]]; then
@@ -295,6 +286,6 @@ spec:
             git push origin cntk-ci-pipeline-${APP_NAME}-${APP_VERSION}
 
             GIT_PUSH_URL="${PROTOCOL}://api.github.com/repos/${GIT_ORG}/${GIT_REPO}/pulls"
-            curl -u ${GIT_AUTH_USER}:${GIT_AUTH_PWD} -d '{"title":"PR to promote to '$(params.dest-environment)' for '${APP_NAME}'","base":"'${GIT_BRANCH}'", "head":"'${GIT_ORG}':cntk-ci-pipeline-'${APP_NAME}'-'${APP_VERSION}'"}' ${GIT_PUSH_URL}
+            curl -u ${GIT_AUTH_USER}:${GIT_AUTH_PWD} -d '{"title":"PR to promote to '$(params.dest-environment)' for '$(params.app-name)'","base":"'${GIT_BRANCH}'", "head":"'${GIT_ORG}':cntk-ci-pipeline-'${APP_NAME}'-'${APP_VERSION}'"}' ${GIT_PUSH_URL}
 
           fi
