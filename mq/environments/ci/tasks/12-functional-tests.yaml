@@ -11,18 +11,19 @@ metadata:
     version: 0.0.0
 spec:
   params:
-  - name: git-url
-    default: ""
-  - name: git-revision
-    default: master
-  - name: source-dir
-    default: /source
-  - name: src-environment
-    default: ""
-  - name: test-file
-    default: ""
+    - name: git-url
+      default: ""
+    - name: git-revision
+      default: master
+    - name: source-dir
+      default: /source
+    - name: src-environment
+      default: ""
+    - name: test-file
+      default: ""
   results:
     - name: app-name
+      description: The app name
   volumes:
     - name: source
       emptyDir: {}
@@ -73,7 +74,7 @@ spec:
       GIT_REPO=${basename%.*}
       echo $GIT_REPO
 
-      echo -n ${GIT_REPO} | tee $(results.app-name.path)
+      echo -n "${GIT_REPO}" | tee $(results.app-name.path)
 
       route=$(oc -n ${SRC_ENV} get route ${GIT_REPO} -o jsonpath='{.spec.host}')
 
