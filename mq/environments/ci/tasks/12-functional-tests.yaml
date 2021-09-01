@@ -74,9 +74,14 @@ spec:
       GIT_REPO=${basename%.*}
       echo $GIT_REPO
 
-      route=$(oc -n ${SRC_ENV} get route ${GIT_REPO} -o jsonpath='{.spec.host}')
-
-      echo -n $route > /source/route.txt
+      route=$(oc -n ${SRC_ENV} get route ${GIT_REPO} -o jsonpath='{.spec.host}' --ignore-not-found)
+      
+      if [[ -z "$route" ]]; then
+        echo "This is a QueueManager ... Skipping this step"
+        exit 0
+      else
+        echo -n $route > /source/route.txt
+      fi
   - name: run-test
     image: postman/newman:ubuntu
     workingDir: $(params.source-dir)
