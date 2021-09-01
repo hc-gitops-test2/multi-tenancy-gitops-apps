@@ -66,16 +66,13 @@ spec:
       set -e
       SLEEP_TIME_SEC=10
       RETRIES=20
-
       SRC_ENV=$(echo $(params.src-environment) | cut -d "-" -f2)
-
       url=$(params.git-url)
       basename=$(basename $url)
       GIT_REPO=${basename%.*}
       echo $GIT_REPO
-
       route=$(oc -n ${SRC_ENV} get route ${GIT_REPO} -o jsonpath='{.spec.host}' --ignore-not-found)
-      
+
       if [[ -z "$route" ]]; then
         echo "This is a QueueManager ... Skipping this step"
         exit 0
@@ -110,5 +107,4 @@ spec:
       basename=$(basename $url)
       GIT_REPO=${basename%.*}
       echo $GIT_REPO
-
       echo -n "${GIT_REPO}" | tee $(results.app-name.path)
